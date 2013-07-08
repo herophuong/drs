@@ -26,8 +26,9 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails', '3.0.1'
-gem 'jquery-migrate-rails', '1.1.1'
+gem "jquery-rails", "2.3.0"
+# gem 'jquery-migrate-rails', '1.1.1'
+# gem 'jquery-ui-rails'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
@@ -48,6 +49,7 @@ group :development, :test do
     gem 'rspec-rails', '2.9.0'
     gem 'guard-rspec', '0.5.5'
     gem 'annotate', '~> 2.4.1.beta'
+    gem 'quiet_assets'
 end
 
 group :test do

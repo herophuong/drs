@@ -12,6 +12,17 @@ FactoryGirl.define do
         end
     end
     
+    factory :admin_user do
+        sequence(:email) { |n| "person_#{n}@framgia.com" }
+        password    "foobarraboof"
+        password_confirmation "foobarraboof"
+        
+        after_build { |admin_user| admin_user.send(:initialize_state_machines, :dynamic => :force)}
+        factory :user_manager do
+            manager true
+        end
+    end
+    
     factory :group do
         sequence(:name) { |n| "Group #{n}" }
         

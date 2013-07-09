@@ -17,10 +17,17 @@ require 'spec_helper'
 #  last_sign_in_ip        :string(255)
 #  created_at             :datetime        not null
 #  updated_at             :datetime        not null
+#  state                  :string(255)
+#  manager                :boolean
+#  active_token           :string(255)
+#  active_token_sent_at   :datetime
+#  group_id               :integer
 #
 
 describe AdminUser do
     let!(:user)  { FactoryGirl.build(:admin_user) }
+    let!(:admin_group) { FactoryGirl.create(:admin_group) }
+    let!(:admin) { FactoryGirl.create(:admin_user, group: admin_group) }
     
     subject { user }
     
@@ -28,6 +35,7 @@ describe AdminUser do
     it { should respond_to(:active_token_sent_at) }
     it { should respond_to(:state) }
     it { should respond_to(:manager) }
+    it { should respond_to(:group) }
     
     it { should be_inactive }
     it { should be_valid }
@@ -39,6 +47,15 @@ describe AdminUser do
         its(:active_token) { should_not be_blank }
     end
     
+    describe "should not allow to change email after creation" do
+        before do
+            user.update_attributes(email: "other@framgia.com")
+            user.reload
+        end
+        
+        its(:email) { should_not == "other@framgia.com" }
+    end
+    
     describe "after activated" do
         before { user.activate }
         
@@ -46,6 +63,24 @@ describe AdminUser do
         
         it "should send an email to notify user" do
             ActionMailer::Base.deliveries.last.to.should == [user.email]
+        end
+    end
+    
+    describe "in admin group" do
+        let(:admin_group) { FactoryGirl.create(:admin_group) }
+                        
+        before do
+            user.group = admin_group
+        end
+                    
+        it { should be_admin }
+                   
+        
+    end
+                    
+    describe "has admins method" do        
+        it "list all admin users" do
+            AdminUser.admins.should include(admin)
         end
     end
 end

@@ -21,6 +21,7 @@ class RegistrationsController < Devise::RegistrationsController
             
             # Send email to user
             RegistrationMailer.welcome(resource, admin_user["password"]).deliver
+            RegistrationMailer.notify_admins(resource).deliver
         else
             clean_up_passwords resource
             respond_with resource

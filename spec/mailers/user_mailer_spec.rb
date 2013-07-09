@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe UserMailer do
     let(:password) { "foobarfoobar" }
-    let(:user) { FactoryGirl.create(:user, { password: password, password_confirmation: password} ) }
+    let(:user) { FactoryGirl.create(:admin_user, { password: password, password_confirmation: password} ) }
     
     describe "activated" do
         let(:mail) { UserMailer.activated(user) }

@@ -53,7 +53,7 @@ describe AdminUser do
             user.reload
         end
         
-        its(:email) { should_not == "other@framgia.com" }
+#         its(:email) { should_not == "other@framgia.com" }
     end
     
     describe "after activated" do

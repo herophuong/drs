@@ -14,6 +14,10 @@ class Group < ActiveRecord::Base
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   has_many :admin_users, :dependent => :nullify, before_remove: :deactivate_user
   
+  def managers
+    admin_users.find_by_sql("SELECT * FROM admin_users WHERE manager = 't'")
+  end
+  
   private
     def deactivate_user(user)
         user.deactivate

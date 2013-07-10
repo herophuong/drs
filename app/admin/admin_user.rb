@@ -81,7 +81,7 @@ ActiveAdmin.register AdminUser, :as => "User" do
     form do |f|                         
         f.inputs "User Details" do       
         f.input :email, :input_html => { :disabled => (!current_admin_user.admin? || current_admin_user.id == f.object.id) }
-        f.input :group_id, :collection => Group.all, :as => :select
+        f.input :group
         f.input :manager
         f.input :state, :as => :select, :collection => [['Active', 'active'], ['Inactive', 'inactive']], :include_blank => false
         f.input :password               

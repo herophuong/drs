@@ -15,12 +15,8 @@ class AdminUser < ActiveRecord::Base
     scope :inactive, where("admin_users.state = 'inactive'")
     scope :active, where("admin_users.state = 'active'")
     
-    search_methods :group_eq
-    scope :group_eq, lambda { |id| where(:group_id => id) }
-    
     validates :group_id, presence: true, on: :update
-    
-    validate :forbid_changing_email, on: :update
+    belongs_to :group
     
     state_machine :state, :initial => :inactive do
         after_transition :inactive => :active do |user, transition|
@@ -41,18 +37,6 @@ class AdminUser < ActiveRecord::Base
     
     def active_for_authentication?
         super && self.active?
-    end
-    
-    def group
-        if self.group_id == nil
-            nil
-        else
-            Group.find_by_id(self.group_id)
-        end
-    end
-    
-    def group=(group)
-        self.group_id = group.id
     end
     
     def admin?
@@ -90,10 +74,6 @@ class AdminUser < ActiveRecord::Base
 #     def email_changed?
 #         changed.include?('email')
 #     end
-    
-    def forbid_changing_email
-        errors[:name] = "can not be changed!" if self.email_changed?
-    end
     
     private
         def create_active_token

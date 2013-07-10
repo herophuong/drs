@@ -13,4 +13,8 @@ class Group < ActiveRecord::Base
   attr_accessible :name
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   has_many :admin_users
+  
+  def managers
+    admin_users.find_by_sql("SELECT * FROM admin_users WHERE manager = 't'")
+  end
 end

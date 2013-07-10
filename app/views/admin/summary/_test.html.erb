@@ -1,0 +1,18 @@
+<% @user = AdminUser.find(:all,
+                            :conditions => "group_id = " + @current_admin_user.group_id.to_s) %>
+
+<%= semantic_form_for :choose, :builder => ActiveAdmin::FormBuilder do |f| %>
+
+        <div class="field">
+            <%= f.label :type %><br />
+            <%= f.select :type, options_for_select([["Week", "1"], ["Month", "2"], ["Year", "3"]]) %>
+        </div>
+        <div class="field">
+            <%= f.label :user %><br />
+            <%= collection_select(:choose, :user, @user, :id, :email, {:prompt => false}) %> 
+        </div>
+  
+        <div class="actions">
+            <%= f.submit %>
+        </div>
+<% end %>

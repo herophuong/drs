@@ -1,14 +1,17 @@
-# == Schema Information
-#
-# Table name: reports
-#
-#  id         :integer         not null, primary key
-#  content    :string(255)
-#  attachment :string(255)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#
-
 class Report < ActiveRecord::Base
-  attr_accessible :attachment, :content
+	before_save {|report|
+		report.time = Time.now
+		report.day = report.time.strftime('%j')
+		report.month = report.time.strftime('%m')		
+		report.year = report.time.strftime('%Y')
+		report.week = report.time.strftime('%W')
+	}
+  attr_accessible :admin_user, :content, :day, :fileLink, :month, :report_title, :time, :week, :year
+  validates :content, presence: true
+  validates :report_title_id, presence: true
+  belongs_to :report_title
+  belongs_to :admin_user
+
+
+  
 end

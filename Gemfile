@@ -27,6 +27,7 @@ group :assets do
 end
 
 gem "jquery-rails", "2.3.0"
+gem "tinymce-rails"
 # gem 'jquery-migrate-rails', '1.1.1'
 # gem 'jquery-ui-rails'
 

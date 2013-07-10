@@ -74,8 +74,6 @@ describe AdminUser do
         end
                     
         it { should be_admin }
-                   
-        
     end
                     
     describe "has admins method" do        

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::AdminUsersController do
+describe Admin::UsersController do
     
     render_views
     

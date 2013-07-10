@@ -1,12 +1,12 @@
 include AdminUsersHelper
-ActiveAdmin.register AdminUser do     
+ActiveAdmin.register AdminUser, :as => "User" do     
     
     scope :all, :default => true
     scope :active
     scope :inactive
     
     filter :email
-#     filter :groups_name, :as => :select, :collection => Group.all.collect { |o| [o.name, o.name] }
+    filter :group_id, :as => :select, :collection => Group.all.collect { |o| [o.name, o.id] }
     
     index do                            
         column :email                     
@@ -33,9 +33,9 @@ ActiveAdmin.register AdminUser do
             end
             if (current_admin_user.admin? && resource.id != current_admin_user.id)
                 if resource.inactive?
-                    links << link_to("Activate", activate_admin_admin_user_path(resource), :method => :put, :class => "member_link activate_link")
+                    links << link_to("Activate", activate_admin_user_path(resource), :method => :put, :class => "member_link activate_link")
                 else
-                    links << link_to("Deactivate", deactivate_admin_admin_user_path(resource), :method => :put, :class => "member_link activate_link")
+                    links << link_to("Deactivate", deactivate_admin_user_path(resource), :method => :put, :class => "member_link activate_link")
                 end
                 links << link_to(I18n.t('active_admin.delete'), resource_path(resource), :method => :delete, :data => {:confirm => I18n.t('active_admin.delete_confirmation')}, :class => "member_link delete_link")
             end
@@ -79,11 +79,11 @@ ActiveAdmin.register AdminUser do
     end
 
     form do |f|                         
-        f.inputs "Admin Details" do       
-        f.input :email, :input_html => { :disabled => true }
+        f.inputs "User Details" do       
+        f.input :email, :input_html => { :disabled => (!current_admin_user.admin? || current_admin_user.id == f.object.id) }
         f.input :group_id, :collection => Group.all, :as => :select
         f.input :manager
-#         f.input :state_event, :collection => [['Active', 'activate', { :selected => f.object.active? }.delete_if{|k,v| v == false}], ['Inactive', 'deactivate', { :selected => f.object.inactive? }.delete_if{|k,v| v == false}]], :label => "State", :include_blank => false
+        f.input :state, :as => :select, :collection => [['Active', 'active'], ['Inactive', 'inactive']], :include_blank => false
         f.input :password               
         f.input :password_confirmation
         end                               
@@ -112,8 +112,25 @@ ActiveAdmin.register AdminUser do
     end
     controller do
         def update_resource(object, attributes)
+            # Detect update method based on password existence
             update_method = attributes.first[:password].present? ? :update_attributes : :update_without_password
+
+            # Send email to user if it is activated through this method
+            if (attributes.first[:state] == 'active' && object.state == 'inactive')
+                UserMailer.activated(object).deliver
+            end
+            
+            # Send update message
             object.send(update_method, *attributes)
+        end
+        
+        def action_methods
+            # Remove unnecessary action based on user's roles
+            if (current_admin_user && current_admin_user.admin?)
+                super
+            else
+                super - ['new', 'destroy', 'create']
+            end
         end
     end
 end                                   

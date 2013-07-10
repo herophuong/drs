@@ -6,7 +6,7 @@ class AdminUser < ActiveRecord::Base
             :recoverable, :rememberable, :trackable, :validatable, :registerable
 
     # Setup accessible (or protected) attributes for your model
-    attr_accessible :email, :password, :password_confirmation, :remember_me, :manager, :group_id, :state_event
+    attr_accessible :email, :password, :password_confirmation, :remember_me, :manager, :group_id, :state, :group
 
     # attr_accessible :title, :body
     
@@ -14,6 +14,9 @@ class AdminUser < ActiveRecord::Base
     
     scope :inactive, where("admin_users.state = 'inactive'")
     scope :active, where("admin_users.state = 'active'")
+    
+    search_methods :group_eq
+    scope :group_eq, lambda { |id| where(:group_id => id) }
     
     validates :group_id, presence: true, on: :update
     

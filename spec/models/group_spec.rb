@@ -35,9 +35,33 @@ describe Group do
     end
     describe "users association" do
         let(:new_group) { FactoryGirl.create(:group) }
-        let(:user) { FactoryGirl.create(:admin_user, group_id: new_group.id) }
+        let(:user) { FactoryGirl.create(:admin_user, group: new_group) }
+        
+        before { user.activate }
+        
         it "should include user" do
            new_group.admin_users.should include(user)
+        end
+        
+        describe "after destroyed the group" do
+            before do
+                new_group.destroy
+                user.reload
+            end
+            
+            describe "its user" do
+                it "should still exists" do
+                    user.should_not == nil
+                end
+                
+                it "should be inactive" do
+                    user.should be_inactive
+                end
+                
+                it "have nil group" do
+                    user.group_id.should == nil
+                end
+            end
         end
     end
 end

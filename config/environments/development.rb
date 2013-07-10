@@ -46,4 +46,6 @@ Drs::Application.configure do
     authentication:       'plain',
     enable_starttls_auto: true  
   }
+  
+  config.log_level = :debug
 end

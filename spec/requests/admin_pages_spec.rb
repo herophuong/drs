@@ -50,39 +50,42 @@ describe "AdminPages" do
         describe "with non-admin users" do
             before do 
                 sign_in(user) 
-                visit admin_admin_users_path
+                visit admin_users_path
             end
             it "should not see edit and delete link on other user" do
-               should_not have_link('Edit', href: edit_admin_admin_user_path(admin)) 
-               should_not have_link('Delete', href: edit_admin_admin_user_path(admin))
+               should_not have_link('Edit', href: edit_admin_user_path(admin)) 
+               should_not have_link('Delete', href: edit_admin_user_path(admin))
             end
             
             it "should see edit link on its self" do
-                should have_link('Edit', href: edit_admin_admin_user_path(user))
+                should have_link('Edit', href: edit_admin_user_path(user))
             end
             
             it "should not see delete link on its self" do
-                should_not have_link('Delete', href: edit_admin_admin_user_path(user))
+                should_not have_link('Delete', href: edit_admin_user_path(user))
             end
             
             it "should not see new user link" do
-#                 should_not have_link('New Admin User')
+                should_not have_link('New User')
             end
         end
         
         describe "with admin users" do
             before do
                 sign_in(admin)
-                visit admin_admin_users_path
+                visit admin_users_path
             end
             it "should see edit link on user" do
                 should have_link('Edit')
             end
             it "should see delete link on user" do
-                should have_link('Delete', href: admin_admin_user_path(user))
+                should have_link('Delete', href: admin_user_path(user))
             end
             it "should not see delete link on its self" do
-                should_not have_link('Delete', href: admin_admin_user_path(admin))
+                should_not have_link('Delete', href: admin_user_path(admin))
+            end
+            it "should see new user link" do
+                should have_link('New User')
             end
         end
     end

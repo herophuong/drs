@@ -6,8 +6,8 @@ en:
   active_admin:
     dashboard: Dashboard
     dashboard_welcome:
-      welcome: "Welcome to DRS Admin. This is the default dashboard page."
-      call_to_action: ""
+      welcome: "Welcome to Daily Report System"
+      call_to_action: "Use the navigation menu bar to access software's functionality"
     view: "View"
     edit: "Edit"
     delete: "Delete"

@@ -1,5 +1,5 @@
 require 'spec_helper'
 
 describe Report do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it {should validates_attachment_size :document, :less_than => 1.megabytes}
 end

@@ -79,11 +79,11 @@ end
    
     def action_methods
         # Remove unnecessary action based on user's roles
-        # if (current_admin_user && current_admin_user.manager?)
+        if(current_admin_user && current_admin_user.manager?)
           ['show', 'index', 'destroy']
-        # else
-          # []
-        # end
+        else
+          ['index']
+        end
     end
     
     def index(options = {}, &block)

@@ -1,4 +1,5 @@
-ActiveAdmin.register ReportTitle do     
+ActiveAdmin.register ReportTitle do    
+  menu :if => proc {current_admin_user.admin?} 
   index do                            
     column :title                     
     column "Guide" do |report|
@@ -14,5 +15,15 @@ ActiveAdmin.register ReportTitle do
       f.input :guide, :input_html => { :class => 'tinymce', :width =>'940px' }, :as => :text
     end                               
     f.actions                         
-  end                                 
+  end   
+
+  controller do
+    def action_method
+      if (current_admin_user.admin?)
+        super
+      else
+        []
+      end
+    end
+  end                              
 end  

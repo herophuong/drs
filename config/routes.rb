@@ -1,13 +1,4 @@
 Drs::Application.routes.draw do
-  resources :reports
-
-
-  resources :reports
-  get '/reports/:user_id/:type/viewlist', to: 'reports#viewlist'
-
-  resources :report_titles
-
-
   root :to => 'admin/dashboard#index'
   devise_for :admin_users, ActiveAdmin::Devise.config.deep_merge( :controllers => { :registrations=>"registrations" } ) do
   #devise_for :admin_users, ActiveAdmin::Devise.config do

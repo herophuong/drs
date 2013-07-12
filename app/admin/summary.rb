@@ -1,4 +1,5 @@
 ActiveAdmin.register Report, :as => "Summary" do     
+    menu :if => proc{current_admin_user.manager?}
   index do                            
     column :report_title
     column "Content" do |report|
@@ -30,7 +31,7 @@ ActiveAdmin.register Report, :as => "Summary" do
           report.where(:year => Time.now.strftime('%Y').to_i, :group_id => current_admin_user.group_id)
         end
 
-  filter :admin_user
+  filter :admin_user, :collection => proc { AdminUser.where(:group_id => current_admin_user.group_id) }
 
   form do |f|                         
     f.inputs "Report" do
@@ -54,7 +55,10 @@ ActiveAdmin.register Report, :as => "Summary" do
       respond_with_dual_blocks(object, options, &block)
     end
    
-
+    def action_methods
+        # Remove unnecessary action based on user's roles
+        ['show', 'index', 'destroy']
+    end
     
   end                                 
 end  

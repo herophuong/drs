@@ -48,6 +48,10 @@ class AdminUser < ActiveRecord::Base
            false
        end
     end
+
+    def manager?
+        self.manager
+    end
     
     def self.admins
         AdminUser.find_by_sql("SELECT admin_users.* FROM admin_users INNER JOIN groups ON admin_users.group_id = groups.id WHERE groups.admin = 't'")

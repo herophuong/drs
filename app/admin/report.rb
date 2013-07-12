@@ -17,8 +17,7 @@ ActiveAdmin.register Report do
           report.where(:admin_user_id => current_admin_user.id)
 
         end
-  filter :time#, :as => :string 
-  filter :admin_user                   
+  filter :time#, :as => :string                   
 
   form do |f|                         
     f.inputs "Report" do
@@ -42,7 +41,9 @@ ActiveAdmin.register Report do
 
       respond_with_dual_blocks(object, options, &block)
     end
-
+    def action_methods
+      super - ['destroy']
+    end
     
   end                                 
 end  

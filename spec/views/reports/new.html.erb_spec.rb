@@ -10,7 +10,8 @@ describe "reports/new" do
       :day => 1,
       :week => 1,
       :month => 1,
-      :year => 1
+      :year => 1,
+      :group_id => 1
     ).as_new_record)
   end
 
@@ -27,6 +28,7 @@ describe "reports/new" do
       assert_select "input#report_week", :name => "report[week]"
       assert_select "input#report_month", :name => "report[month]"
       assert_select "input#report_year", :name => "report[year]"
+      assert_select "input#report_group_id", :name => "report[group_id]"
     end
   end
 end

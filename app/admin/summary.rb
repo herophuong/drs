@@ -1,33 +1,60 @@
-ActiveAdmin.register_page "Summary" do
-	
-	content do
-		render 'test'
-	end
-	
-	controller do
-		def index(options={}, &block)
-			@type = report.type
-			if @type == 1
-      			@report = Report.find(:all, 
-                            :order => 'time DESC',
-                            :conditions => 'week =' +  Time.now.strftime('%W') + ' AND year = ' + Time.now.strftime('%Y') + ' AND user_id = ' + @user_id )
+ActiveAdmin.register Report, :as => "Summary" do     
+  index do                            
+    column :report_title
+    column "Content" do |report|
+      simple_format report.content
+    end
+    column :fileLink
+    column :time
+    column :admin_user
 
-    		elsif @type == 2	
-       			@report = Report.find(:all, 
-                            :order => 'time DESC',
-                            :conditions => 'month =' +  Time.now.strftime('%m') + ' AND year = ' + Time.now.strftime('%Y') + ' AND user_id = ' + @user_id )
+      
+    default_actions                   
+  end                                 
 
-    		else
-       			@report = Report.find(:all, 
-                            :order => 'time DESC',
-                            :conditions => 'year =' +  Time.now.strftime('%Y') + ' AND user_id = ' + @user_id )
-    		end
+    scope "Default", :default => true do |report|
+          report.order('time DESC')
+          report.where(:group_id => current_admin_user.group_id)
 
-      		respond_to do |format|
-        		format.html # viewlist.html.erb
-        		format.json { render json: @report }
-      		end
-			super
-		end
-	end
-end
+        end
+  scope :Week do |report|
+          report.order('time DESC')
+          report.where(:week => Time.now.strftime('%W').to_i, :year => Time.now.strftime('%Y').to_i,:group_id => current_admin_user.group_id)
+        end
+  scope :Month do |report|
+          report.order('time DESC')
+          report.where(:month => Time.now.strftime('%m').to_i, :year => Time.now.strftime('%Y').to_i, :group_id => current_admin_user.group_id)
+        end
+  scope :Year do |report|
+          report.order('time DESC')
+          report.where(:year => Time.now.strftime('%Y').to_i, :group_id => current_admin_user.group_id)
+        end
+
+  filter :admin_user
+
+  form do |f|                         
+    f.inputs "Report" do
+      
+      f.input :report_title
+      f.input :content, :input_html => { :class => 'tinymce', :width =>'940px' }, :as => :text
+      f.input :fileLink
+    end                               
+    f.actions                         
+  end
+
+  controller do
+    def create(options={}, &block)
+      object = build_resource
+      object.admin_user_id = current_admin_user.id
+
+      if create_resource(object)
+        options[:location] ||= smart_resource_url
+      end
+
+      respond_with_dual_blocks(object, options, &block)
+    end
+   
+
+    
+  end                                 
+end  

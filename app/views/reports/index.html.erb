@@ -11,6 +11,7 @@
     <th>Week</th>
     <th>Month</th>
     <th>Year</th>
+    <th>Group</th>
     <th></th>
     <th></th>
     <th></th>
@@ -27,6 +28,7 @@
     <td><%= report.week %></td>
     <td><%= report.month %></td>
     <td><%= report.year %></td>
+    <td><%= report.group_id %></td>
     <td><%= link_to 'Show', report %></td>
     <td><%= link_to 'Edit', edit_report_path(report) %></td>
     <td><%= link_to 'Destroy', report, method: :delete, data: { confirm: 'Are you sure?' } %></td>

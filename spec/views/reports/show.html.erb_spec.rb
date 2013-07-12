@@ -10,7 +10,8 @@ describe "reports/show" do
       :day => 3,
       :week => 4,
       :month => 5,
-      :year => 6
+      :year => 6,
+      :group_id => 7
     ))
   end
 
@@ -25,5 +26,6 @@ describe "reports/show" do
     rendered.should match(/4/)
     rendered.should match(/5/)
     rendered.should match(/6/)
+    rendered.should match(/7/)
   end
 end

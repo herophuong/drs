@@ -11,7 +11,8 @@ describe "reports/index" do
         :day => 3,
         :week => 4,
         :month => 5,
-        :year => 6
+        :year => 6,
+        :group_id => 7
       ),
       stub_model(Report,
         :report_title_id => 1,
@@ -21,7 +22,8 @@ describe "reports/index" do
         :day => 3,
         :week => 4,
         :month => 5,
-        :year => 6
+        :year => 6,
+        :group_id => 7
       )
     ])
   end
@@ -37,5 +39,6 @@ describe "reports/index" do
     assert_select "tr>td", :text => 4.to_s, :count => 2
     assert_select "tr>td", :text => 5.to_s, :count => 2
     assert_select "tr>td", :text => 6.to_s, :count => 2
+    assert_select "tr>td", :text => 7.to_s, :count => 2
   end
 end

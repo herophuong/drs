@@ -11,8 +11,4 @@
             <%= f.label :user %><br />
             <%= collection_select(:choose, :user, @user, :id, :email, {:prompt => false}) %> 
         </div>
-  
-        <div class="actions">
-            <%= f.submit %>
-        </div>
 <% end %>

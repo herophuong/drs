@@ -7,12 +7,18 @@ ActiveAdmin.register Report do
     column :fileLink
     column :time
     column :admin_user
+
       
     default_actions                   
   end                                 
 
-  filter :time
-  filter :admin_user                     
+  scope "Default", :default => true do |report|
+          report.order('time DESC')
+          report.where(:admin_user_id => current_admin_user.id)
+
+        end
+  filter :time#, :as => :string 
+  filter :admin_user                   
 
   form do |f|                         
     f.inputs "Report" do
@@ -28,6 +34,7 @@ ActiveAdmin.register Report do
     def create(options={}, &block)
       object = build_resource
       object.admin_user_id = current_admin_user.id
+      object.group_id = current_admin_user.group_id
 
       if create_resource(object)
         options[:location] ||= smart_resource_url
@@ -36,5 +43,6 @@ ActiveAdmin.register Report do
       respond_with_dual_blocks(object, options, &block)
     end
 
+    
   end                                 
 end  

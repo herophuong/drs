@@ -57,7 +57,11 @@ ActiveAdmin.register Report, :as => "Summary" do
    
     def action_methods
         # Remove unnecessary action based on user's roles
-        ['show', 'index', 'destroy']
+        if(current_admin_user.manager?)
+          ['show', 'index', 'destroy']
+        else
+          []
+        end
     end
     
   end                                 

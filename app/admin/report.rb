@@ -1,5 +1,4 @@
 ActiveAdmin.register Report do    
-  menu :if => proc{current_admin_user.admin?} 
   index do                            
     column :report_title_id
     column "Content" do |report|
@@ -45,7 +44,7 @@ ActiveAdmin.register Report do
       respond_with_dual_blocks(object, options, &block)
     end
     def action_methods
-      super - ['destroy']
+      super - ['destroy', 'update', 'edit']
     end
     
   end                                 

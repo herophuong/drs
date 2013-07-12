@@ -28,7 +28,7 @@ ActiveAdmin.register AdminUser, :as => "User" do
         column :actions do |resource|
             links = ''.html_safe
             links << link_to(I18n.t('active_admin.view'), resource_path(resource), :class => "member_link view_link")
-            if (current_admin_user.admin? || resource.id = current_admin_user.id)
+            if (current_admin_user.admin? || resource.id == current_admin_user.id)
                 links << link_to(I18n.t('active_admin.edit'), edit_resource_path(resource), :class => "member_link edit_link")
             end
             if (current_admin_user.admin? && resource.id != current_admin_user.id)
@@ -81,9 +81,11 @@ ActiveAdmin.register AdminUser, :as => "User" do
     form do |f|                         
         f.inputs "User Details" do       
         f.input :email, :input_html => { :disabled => (!current_admin_user.admin? || current_admin_user.id == f.object.id) }
-        f.input :group
-        f.input :manager
-        f.input :state, :as => :select, :collection => [['Active', 'active'], ['Inactive', 'inactive']], :include_blank => false
+        if current_admin_user.admin?
+            f.input :group
+            f.input :manager
+            f.input :state, :as => :select, :collection => [['Active', 'active'], ['Inactive', 'inactive']], :include_blank => false
+        end
         f.input :password               
         f.input :password_confirmation
         end                               
@@ -130,6 +132,22 @@ ActiveAdmin.register AdminUser, :as => "User" do
                 super
             else
                 super - ['new', 'destroy', 'create']
+            end
+        end
+
+        def edit(options = {}, &blocks)
+            if (!current_admin_user.admin? && resource.id != current_admin_user.id)
+                redirect_to admin_users_path
+            else
+                super
+            end
+        end
+
+        def update(options = {}, &blocks)
+            if (!current_admin_user.admin? && resource.id != current_admin_user.id)
+                redirect_to admin_users_path
+            else
+                super
             end
         end
     end

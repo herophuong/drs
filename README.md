@@ -40,3 +40,5 @@ Now access [http://localhost:3000/](http://localhost:3000/) and use this credent
 
 **Email:** `drsprj@gmail.com`
 **Password:** `drsprj1234`
+
+This email is also currently use as the mail agent for the system.

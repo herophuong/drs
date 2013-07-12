@@ -26,7 +26,7 @@ then change it back after these command:
 ```bash
 $ bundle execute rake db:migrate
 $ bundle execute rake db:test:prepare
-$ bundle execute rake db:initadmin
+$ bundle execute rake db:populate
 ```
 
 ## ACCESS THE ADMIN

@@ -1,4 +1,5 @@
-ActiveAdmin.register Report do     
+ActiveAdmin.register Report do    
+  menu :if => proc{current_admin_user.admin?} 
   index do                            
     column :report_title_id
     column "Content" do |report|
@@ -24,8 +25,9 @@ ActiveAdmin.register Report do
       
       f.input :report_title
       f.input :content, :input_html => { :class => 'tinymce', :width =>'940px' }, :as => :text
-      f.input :fileLink
-    end                               
+      f.input :document  
+    end
+
     f.actions                         
   end
 
@@ -33,6 +35,7 @@ ActiveAdmin.register Report do
     def create(options={}, &block)
       object = build_resource
       object.admin_user_id = current_admin_user.id
+
       object.group_id = current_admin_user.group_id
 
       if create_resource(object)

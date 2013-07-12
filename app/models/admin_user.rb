@@ -83,7 +83,9 @@ class AdminUser < ActiveRecord::Base
     
     private
         def create_active_token
-            self.active_token = SecureRandom.urlsafe_base64
+            if self.has_attribute?("active_token")
+                self.active_token = SecureRandom.urlsafe_base64
+            end
         end
 end
 

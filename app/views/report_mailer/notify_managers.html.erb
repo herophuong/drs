@@ -4,10 +4,19 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>You are the man</h1>
-    <p>
-       ...ager:
-    </p>
+    <div style="width: 100%; text-align: center; height: 50px; background-color: #425470; padding-top: 10px; padding-bottom: 10px; color: #d9fffd;">
+        <h1><strong>Daily Report System</strong></h1>
+    </div>
+    <div style="margin: 50px;">
+        <h2 style="font-size: 18px; line-height: 24px; color: #c25130; font-weight: bold;">Reports from group <%= @group.name %> members</h2>
+        <% if @links.count > 0 %>
+            <% @links.each do |link| %>
+                <%= link[:email] %>: 
+                <%= root_url + link[:link] %>
+            <% end %>
+        <% else %>
+            <p> No report today </p>
+        <% end %>
+    </div>
   </body>
-</html> 
- 
+</html>

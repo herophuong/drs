@@ -6,7 +6,7 @@ ActiveAdmin.register AdminUser, :as => "User" do
     scope :inactive
     
     filter :email
-    filter :group_id, :as => :select, :collection => Group.all.collect { |o| [o.name, o.id] }
+    filter :group_id, :as => :select, :collection => proc { Group.all.collect { |o| [o.name, o.id] } }
     
     index do                            
         column :email                     

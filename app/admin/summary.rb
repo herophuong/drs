@@ -1,5 +1,19 @@
 ActiveAdmin.register Report, :as => "Summary" do     
     menu :if => proc{current_admin_user.manager?}
+    xlsx(:header_style => {:bg_color => 'FF0000', :fg_color => 'FF' }) do
+
+      # deleting columns from the report
+      delete_columns :id, :created_at, :updated_at, :content, :year, :day, :week, :month, :fileLink
+  
+      # adding a column to the report
+      ReportTitle.all.each do |report_title|
+        column(report_title.title) do |resource|
+            if resource.report_title_id == report_title.id
+              "#{resource.content}"
+            end
+        end
+    end
+end
   index do                            
     column :report_title
     column "Content" do |report|
@@ -31,7 +45,7 @@ ActiveAdmin.register Report, :as => "Summary" do
           report.where(:year => Time.now.strftime('%Y').to_i, :group_id => current_admin_user.group_id)
         end
 
-  filter :admin_user, :collection => proc { AdminUser.where(:group_id => current_admin_user.group_id) }
+  filter :admin_user, :collection => proc { AdminUser.where(:group_id => current_admin_user.group_id).map{|u| [u.email, u.id]}}
 
   form do |f|                         
     f.inputs "Report" do
@@ -42,6 +56,14 @@ ActiveAdmin.register Report, :as => "Summary" do
     end                               
     f.actions                         
   end
+  
+  # index :download_links => proc { 
+    # if current_admin_user.manager?
+      # [:csv, :xml, :json, :xlsx]
+    # else
+      # false
+    # end
+  # }
 
   controller do
     def create(options={}, &block)
@@ -57,12 +79,19 @@ ActiveAdmin.register Report, :as => "Summary" do
    
     def action_methods
         # Remove unnecessary action based on user's roles
-        if(current_admin_user.manager?)
+        if(current_admin_user && current_admin_user.manager?)
           ['show', 'index', 'destroy']
         else
-          []
+          ['index']
         end
     end
     
+    def index(options = {}, &block)
+      if current_admin_user.manager?
+        super
+      else
+        redirect_to admin_root_path
+      end
+    end
   end                                 
 end  

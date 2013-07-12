@@ -14,18 +14,7 @@ $ bundle execute rake db:initadmin
 
 ## ACCESS THE ADMIN
 
-First off, edit `config/routes.rb`, change this line:
-
-```ruby
-ActiveAdmin.routes(self) if (!$ARGV.nil? && $ARGV.find_all { |x| x =~ /migrate|rollback/i}.empty?)
-```
-
-to this
-```ruby
-ActiveAdmin.routes(self)
-```
-
-Then run the server:
+First off, run the server:
 
 ```bash
 $ rails server

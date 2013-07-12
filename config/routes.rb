@@ -10,7 +10,7 @@ Drs::Application.routes.draw do
 
   root :to => 'admin/dashboard#index'
   devise_for :admin_users, ActiveAdmin::Devise.config.deep_merge( :controllers => { :registrations=>"registrations" } )
-  ActiveAdmin.routes(self) if (!$ARGV.nil? && $ARGV.find_all { |x| x =~ /migrate|rollback/i}.empty?)
+  ActiveAdmin.routes(self)
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

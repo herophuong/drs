@@ -1,11 +1,9 @@
 class AddAttachmentDocumentToReports < ActiveRecord::Migration
   def self.up
-    change_table :reports do |t|
-      t.attachment :document
-    end
+    add_attachment :reports, :document
   end
 
   def self.down
-    drop_attached_file :reports, :document
+    remove_attachment :reports, :document
   end
 end

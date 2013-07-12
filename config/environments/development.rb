@@ -48,4 +48,6 @@ Drs::Application.configure do
   }
   
   config.log_level = :debug
+  
+  config.paperclip_defaults = {:storage => :fog, :fog_credentials => {:provider => "Local", :local_root => "#{Rails.root}/public"}, :fog_directory => "", :fog_host => "http://localhost:3000"}
 end

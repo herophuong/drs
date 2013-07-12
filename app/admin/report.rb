@@ -4,7 +4,9 @@ ActiveAdmin.register Report do
     column "Content" do |report|
       simple_format report.content
     end
-    column :fileLink
+    column "Attachment link" do |report|
+      link_to report.document_file_name, report.document.url(:original)
+    end
     column :time
     column :admin_user
 

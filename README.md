@@ -6,7 +6,23 @@ After `git clone`, run these commands:
 
 ```bash
 $ bundle install
-$ bundle execute rake db:reset
+```
+
+Because of xlsx, we need to comment out ActiveAdmin routes initialization before migrate database. 
+
+Change this line in `config/routes.rb`:
+```ruby
+ActiveAdmin.routes(self)
+```
+
+to 
+
+```ruby
+#ActiveAdmin.routes(self)
+```
+
+then change it back after these command:
+
 $ bundle execute rake db:migrate
 $ bundle execute rake db:test:prepare
 $ bundle execute rake db:initadmin

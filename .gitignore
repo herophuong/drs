@@ -15,3 +15,4 @@
 /tmp
 .kate*
 /vendor/cache
+/public/system

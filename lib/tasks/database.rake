@@ -60,9 +60,12 @@ def make_report_titles
 end
 
 def make_reports
+  file = File.open(File.join(Rails.root,"README.md"))
+  
   users = AdminUser.all(limit: 6)
   10.times do |n|
     content = Faker::Lorem.sentence(5)
-    users.each { |user| user.reports.create!(content: content, report_title_id: n % 6 + 1) }
+    users.each { |user| user.reports.create!(content: content, report_title_id: n % 6 + 1, group_id: 1, document: file) }
   end
+  file.close
 end

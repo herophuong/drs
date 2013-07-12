@@ -3,23 +3,27 @@ ActiveAdmin.register Report, :as => "Summary" do
     xlsx(:header_style => {:bg_color => 'FF0000', :fg_color => 'FF' }) do
 
       # deleting columns from the report
-      delete_columns :id, :created_at, :updated_at, :content, :year, :day, :week, :month, :fileLink
+      delete_columns :id, :created_at, :updated_at, :content, :year, :day, :week, 
+                     :month, :fileLink, :document_file_name, :document_file_size, 
+                     :document_content_type, :document_updated_at
   
       # adding a column to the report
       ReportTitle.all.each do |report_title|
         column(report_title.title) do |resource|
             if resource.report_title_id == report_title.id
-              "#{resource.content}"
+              "#{resource.content} #{resource.document.url(:original)}"
             end
         end
     end
-end
+end 
   index do                            
     column :report_title
     column "Content" do |report|
       simple_format report.content
     end
-    column :fileLink
+    column "Attachment link" do |report|
+      link_to report.document_file_name, report.document.url(:original)
+    end
     column :time
     column :admin_user
 

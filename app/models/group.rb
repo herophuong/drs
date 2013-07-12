@@ -15,8 +15,19 @@ class Group < ActiveRecord::Base
 
   has_many :admin_users, :dependent => :nullify, before_remove: :deactivate_user
   has_many :reports, :through => :admin_users
+  
   def managers
     admin_users.find_by_sql("SELECT * FROM admin_users WHERE manager = 't'")
+  end
+  
+  def summarize
+    links = Array.new
+    admin_users.each do |user|
+      if user.reports.where(:day => Time.now.strftime('%j')).count != 0
+        links.push({ link: "admin/summaries.xlsx?utf8=1&q[admin_user_id_eq]=#{user.id}&commit=Filter&order=id_desc", email: user.email })
+      end
+    end
+    links
   end
   
   private

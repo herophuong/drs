@@ -9,7 +9,11 @@ Drs::Application.routes.draw do
 
 
   root :to => 'admin/dashboard#index'
-  devise_for :admin_users, ActiveAdmin::Devise.config.deep_merge( :controllers => { :registrations=>"registrations" } )
+  devise_for :admin_users, ActiveAdmin::Devise.config.deep_merge( :controllers => { :registrations=>"registrations" } ) do
+  #devise_for :admin_users, ActiveAdmin::Devise.config do
+    match "/admin/login.csv" => redirect("/admin/login")
+    match "/admin/login.xlsx" => redirect("/admin/login")
+  end
   ActiveAdmin.routes(self)
 
   # The priority is based upon order of creation:
